@@ -52,6 +52,8 @@ const putUser = async (req = request , res = response) => {
 }
 
 const deleteUser = async (req = request,res = response) => {
+    const auth = req.auth;
+    console.log(auth);
     const { id } = req.params;
     const user = await User.findOneAndUpdate(
         {id},

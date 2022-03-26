@@ -1,20 +1,22 @@
 const { Router } = require('express');
-const { check, body, query, param,  } = require('express-validator');
-// Controllers
+const { body, query, param } = require('express-validator');
+// Controller
 const { getUsers, putUser, postUser, deleteUser } = require('../controllers/user.controller');
 
 // Middlelwares
-const { validarCampos } = require('../middlewares/validar-campos.middleware');
+const {validarCampos,authenticate, authorize} = require('../middlewares');
 
 // Helpers
 const { isValidRole, isEmailDuplicated, idExist } = require('../helpers/dbvalidator.helper');
 
 const router = Router();
+
 router.get('/',[
     query('limit').optional().bail().isInt().withMessage('El valor limit debe ser entero'),
     query('next').optional().bail().isInt().withMessage('El valor next debe ser entero'),
     validarCampos
 ],getUsers);
+
 router.put('/:id',[
     param('id').isMongoId().withMessage('El Id ingresado no es valido').bail().custom(idExist),
     body('nombre','El nombre es obligatorio').notEmpty(),
@@ -30,6 +32,8 @@ router.post('/', [
 ],postUser);
 
 router.delete('/:id',[
+    authenticate,
+    authorize('ADMIN_ROLE'),
     param('id').isMongoId().withMessage('El Id ingresado no es valido').bail().custom(idExist),
     validarCampos
 ],deleteUser);
