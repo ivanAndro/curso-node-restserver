@@ -1,7 +1,8 @@
 const { response, request } = require("express");
 const jwt = require("jsonwebtoken");
+const { User } = require("../models");
 
-const authenticate = (req = request,res, next) =>{
+const authenticate = async (req = request,res, next) =>{
     const token = req.header('Authorization');
     if(!token){
         return res.status(401).json({
@@ -11,9 +12,20 @@ const authenticate = (req = request,res, next) =>{
     try{
         const payload = jwt.verify(token, process.env.SECRETKEY);   
         req.auth = payload;
+        const user = await User.findById(payload.uid);
+        if(!user)
+        {
+            return res.status(401).json({
+                message: "El usuario autenticado no existe"
+            });
+        }
+        if(!user.estado){
+            return res.status(401).json({
+                message: "El usuario autenticado no esta activo"
+            });
+        }
         next();
     }catch(error){
-        console.log(error);
         return res.status(401).json({
             message:"Token invalido"
         });

@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const dbConnection = async () => {
     try{
-        mongoose.connect(process.env.MONGODB_CONNECTION, {useNewUrlParser: true},
+        mongoose.connect(process.env.MONGODB_CONNECTION, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        },
             (err, res) => {
                 if(err) throw err;
                 console.log("Base de datos en linea");

@@ -1,5 +1,4 @@
-const Role = require('../models/role.model')
-const User = require('../models/user.model')
+const {Role, User, Category, Product} = require('../models')
 const isValidRole = async (role = '') => {
     const existeRol = await Role.findOne({rol: role});
     if(!existeRol) throw new Error(`El rol ${role} no existe`);        
@@ -13,16 +12,58 @@ const isEmailDuplicated = async(correo = '') =>{
 }
 
 
-const idExist = async(id = '') => {
+const userIdExist = async(id = '') => {
 
     if(id != ''){
         const exist = await User.findById(id);
         if(!exist) throw new Error(`El id: ${id} no existe`);
     }
 }
+/**
+ * 
+ * @param {String} id Id de la categoria
+ */
+const verifyCategoryId = async(id = '') => {
+    if(id != ''){
+        const exist = await Category.findById(id);
+        if(!exist) throw new Error(`No se encontro categoria con id: ${id}`);
+    }
+}
+
+const verifyCategoryName =  async(nombre = '') =>{
+    if(nombre == ''){
+        throw new Error("No se ha especificado el nombre");
+    }
+    const exist = await Category.findOne({nombre});
+    if(exist) throw new Error(`La categoria ${nombre} ya fue registrada`);
+}
+
+//Productos *******************************************
+const verifyProductId = async(id = '') => {
+    if(id != ''){
+        const exist = await Product.findById(id);
+        if(!exist) throw new Error(`No se encontro categoria con id: ${id}`);
+    }
+}
+const verifyProductName =  async(nombre = '') =>{
+    if(nombre == ''){
+        throw new Error("No se ha especificado el nombre");
+    }
+    const exist = await Product.findOne({nombre});
+    if(exist) throw new Error(`El producto ${nombre} ya fue registrado`);
+}
+
+// *****************************************************
+
 
 module.exports = {
     isValidRole,
     isEmailDuplicated,
-    idExist
+    idExist: userIdExist,
+    
+    verifyCategoryId,
+    verifyCategoryName,
+
+    verifyProductName,
+    verifyProductId
 }

@@ -1,13 +1,13 @@
 const { Router } = require('express');
 const { body, query, param } = require('express-validator');
 // Controller
-const { getUsers, putUser, postUser, deleteUser } = require('../controllers/user.controller');
+const { getUsers, putUser, postUser, deleteUser } = require('../controllers');
 
 // Middlelwares
 const {validarCampos,authenticate, authorize} = require('../middlewares');
 
 // Helpers
-const { isValidRole, isEmailDuplicated, idExist } = require('../helpers/dbvalidator.helper');
+const { isValidRole, isEmailDuplicated, idExist } = require('../helpers');
 
 const router = Router();
 

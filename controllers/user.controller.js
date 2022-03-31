@@ -47,7 +47,7 @@ const putUser = async (req = request , res = response) => {
     const user = await User.findById(id);
     user.role = role;
     user.nombre = nombre;
-    user.save();
+    await user.save();
     res.json(user);
 }
 
