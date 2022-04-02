@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { body, query, param } = require('express-validator');
 // Controller
-const { getUsers, putUser, postUser, deleteUser } = require('../controllers');
+const { getUsers, putUser, postUser, deleteUser, getUser } = require('../controllers');
 
 // Middlelwares
 const {validarCampos,authenticate, authorize} = require('../middlewares');
@@ -16,6 +16,13 @@ router.get('/',[
     query('next').optional().bail().isInt().withMessage('El valor next debe ser entero'),
     validarCampos
 ],getUsers);
+
+router.get('/:id',[
+    authenticate,
+    param('id')
+        .isMongoId().withMessage('El Id ingresado no es valido').bail(),
+    validarCampos
+],getUser);
 
 router.put('/:id',[
     param('id').isMongoId().withMessage('El Id ingresado no es valido').bail().custom(idExist),

@@ -2,6 +2,30 @@ const { response, request } = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user.model');
 
+const getUser = async(req = request, res = response) => {
+    try{
+        const id = req.params.id;
+        const user = await User.findById(id);
+        if(!user || !user.estado){
+            return res.status(404).json({
+                    message:"No se encontro el registro solicitado"
+                });
+        }
+
+        res.json({
+            message:"Usuario encontrado",
+            user
+        });
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({
+            message: "Ha ocurrido un error"
+        });
+    }
+}
+
+
 const getUsers = async (req = request,res = response) => {
 
     const {limit = 3, next = 0} = req.query
@@ -63,6 +87,7 @@ const deleteUser = async (req = request,res = response) => {
 
 
 module.exports = {
+    getUser,
     getUsers,
     postUser,
     putUser,

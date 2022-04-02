@@ -1,4 +1,4 @@
-const {Role, User, Category, Product} = require('../models')
+const {Role, User, Category, Product, Archive} = require('../models')
 const isValidRole = async (role = '') => {
     const existeRol = await Role.findOne({rol: role});
     if(!existeRol) throw new Error(`El rol ${role} no existe`);        
@@ -56,6 +56,13 @@ const verifyProductName =  async(nombre = '') =>{
 // *****************************************************
 
 
+// *************** Archives *******************
+const verifyArchiveId = async(id) => {
+    const exist = await Archive.findById(id);
+    if(!exist) throw new Error('El archivo solicitado no existe');
+}
+
+/***********************************************/
 module.exports = {
     isValidRole,
     isEmailDuplicated,
@@ -65,5 +72,7 @@ module.exports = {
     verifyCategoryName,
 
     verifyProductName,
-    verifyProductId
+    verifyProductId,
+
+    verifyArchiveId
 }

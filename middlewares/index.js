@@ -1,9 +1,10 @@
-const  validarCampos = require('../middlewares/validar-campos.middleware');
-const auth = require('../middlewares/auth.middleware');
-const valueSanitizer = require('../middlewares/sanitizer.middleware');
+const validarCampos = require('../middlewares/validar-campos.middleware');
+const authMiddleware = require('../middlewares/auth.middleware');
+const sanitizerMiddleware = require('../middlewares/sanitizer.middleware');
+const filesMiddleware = require('../middlewares/files.middleware');
 module.exports = {
-
     ...validarCampos,
-    ...auth,
-    ...valueSanitizer
+    ...authMiddleware,
+    ...sanitizerMiddleware,
+    ...filesMiddleware
 }

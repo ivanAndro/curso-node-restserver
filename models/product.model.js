@@ -17,6 +17,11 @@ const ProductSchema = Schema({
         default: true,
         require: true,
     },
+    image:{
+        type: Schema.Types.ObjectId,
+        ref:'Archive',
+        require: false
+    },
     user:{
         type: Schema.Types.ObjectId,
         ref: 'User',

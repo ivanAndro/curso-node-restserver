@@ -23,6 +23,11 @@ const UserSchema = Schema({
         type: Boolean,
         default: true
     },
+    image:{
+        type: Schema.Types.ObjectId,
+        ref:'Archive',
+        require: false
+    },
     google: {
         type: Boolean,
         default: false
